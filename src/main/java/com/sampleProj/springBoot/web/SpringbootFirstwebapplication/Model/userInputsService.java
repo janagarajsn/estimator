@@ -85,7 +85,6 @@ public class userInputsService {
 		return reportDetails;
 	}
 
-
 	public List<GenerateReportPOJO> retrieveAllData(int custId) {
 		List<Object[]> objList = reportRepo.generateReportDetails(custId);
 		List<GenerateReportPOJO> latestNewsList = new ArrayList<GenerateReportPOJO>();
