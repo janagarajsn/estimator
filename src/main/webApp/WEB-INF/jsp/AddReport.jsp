@@ -50,16 +50,20 @@
 			success : function(data) {
 				var html = '';
 				var len = data.length;
-				for (var i = 0; i < len; i++) {
-					html += '<option value="' + data[i][0] + '">' + data[i][1]
-							+ '</option>';
+				if (len > 0) {
+					for (var i = 0; i < len; i++) {
+						html += '<option value="' + data[i][0] + '">'
+								+ data[i][1] + '</option>';
+					}
+				} else {
+					html += '<option value= 0 >--SELECT-- </option>';
 				}
 				html += '</option>';
 				$('#technology').html(html);
 				loadTask();
 			},
 			error : function(e) {
-				alert(e);
+				alert("error");
 			}
 
 		});
@@ -76,9 +80,13 @@
 			success : function(data) {
 				var html = '';
 				var len = data.length;
-				for (var i = 0; i < len; i++) {
-					html += '<option value="' + data[i][0] + '">' + data[i][1]
-							+ '</option>';
+				if (len > 0) {
+					for (var i = 0; i < len; i++) {
+						html += '<option value="' + data[i][0] + '">'
+								+ data[i][1] + '</option>';
+					}
+				} else {
+					html += '<option value= 0 >--SELECT-- </option>';
 				}
 				html += '</option>';
 				$('#taskName').html(html);
@@ -95,44 +103,44 @@
 		var custId = $('#custId').text();
 		var effort = $('#effort').val();
 		var reportName = $('#reportName').val();
-		$.ajax({
-			type : 'POST',
-			url : '/saveReport',
-			data : {
-				'techId' : techId,
-				'taskId' : taskId,
-				'custId' : custId,
-				'effort' : effort,
-				'reportName' : reportName
-			},
-			cache : false,
-			success : function(data) {
-				if(data){
-				$('#dynTable tbody').empty();
-				for (var i = 0; i < data.length; i++) {
-                    var rows = "<tr>"  
-                    + "<td >" + data[i][0] + "</td>"    
-                    + "<td >" + data[i][1] + "</td>"  
-                    + "<td >" + data[i][2] + "</td>"  
-                    + "</tr>";  
-                    $('#dynTable tbody').append(rows);  
-                }  
-				}
-				else{
-					$('#dynTable').empty();
-					$('#dynTable').html
-				}
-				
-			},
-			error : function(e) {
-				alert("error");
-			}
+		if ((reportName)){
+			$.ajax({
+				type : 'POST',
+				url : '/saveReport',
+				data : {
+					'techId' : techId,
+					'taskId' : taskId,
+					'custId' : custId,
+					'effort' : effort,
+					'reportName' : reportName
+				},
+				cache : false,
+				success : function(data) {
+					$('#dynTable tbody').empty();
+					for (var i = 0; i < data.length; i++) {
+						var rows = "<tr>" + "<td >" + data[i][0] + "</td>"
+								+ "<td >" + data[i][1] + "</td>" + "<td >"
+								+ data[i][2] + "</td>" + "</tr>";
+						$('#dynTable tbody').append(rows);
+						alert("Report Created");
+					}
+				},
+				 error: function(xhr, statusText, err){
+					 if(xhr.status == 400  )
+				        alert("Error: Please Enter all the details"); 
+					 else
+						 alert("Error Occured");
+				    }
 
-		});
+			});
+		}
+		else{
+			alert("Please enter all the details")
+		}
 
 	}
 	function goBack() {
-		  window.history.back();
+		window.history.back();
 	}
 </script>
 </head>
@@ -191,7 +199,7 @@
 						placeholder="Duration">
 				</div>
 			</div>
-				<table class="table table-striped" id="dynTable">
+			<table class="table table-striped" id="dynTable">
 				<thead class="thead-dark">
 					<tr>
 						<th>Technology Name</th>
@@ -201,7 +209,7 @@
 				</thead>
 				<tbody>
 				</tbody>
-				
+
 			</table>
 			<button type="button" class="btn btn-primary" onclick="saveReport()">Save</button>
 			<button type="button" class="btn btn-warning float-right ml-2"

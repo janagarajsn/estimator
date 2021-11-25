@@ -58,10 +58,12 @@
 				html += '</option>';
 				$('#technology').html(html);
 			},
-			error : function(e) {
-				alert(e);
-			}
-
+			error: function(xhr, statusText, err){
+				 if(xhr.status == 400  )
+			        alert("Error: Please Enter all the details"); 
+				 else
+					 alert("Error Occured");
+			    }
 		});
 	}
 	function addTask() {
@@ -69,7 +71,7 @@
 		var techName = $('#technology :selected').text();
 		var techId = $('#technology :selected').val();
 		var task_name = $("#task_name").val();
-		console.log(task_name);
+		if(task_name){
 		$.ajax({
 			type : 'POST',
 			url : '/addTask',
@@ -94,10 +96,17 @@
 				alert("Task added Successfully");
 			},
 			error : function(e) {
-				alert("error");
-			}
+				 if(xhr.status == 400  )
+				        alert("Error: Please Enter all the details"); 
+					 else
+						 alert("Error Occured");
+				    }
 
 		});
+	}
+		else{
+			alert("Enter all the details");
+		}
 	}
 	function goBack() {
 		  window.history.back();

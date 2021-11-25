@@ -14,7 +14,6 @@ import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Service.Custo
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Service.ReportRepository;
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Service.TaskRepository;
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Service.TechnologyRepository;
-//test comment
 
 @Service
 public class userInputsService {
@@ -85,6 +84,7 @@ public class userInputsService {
 		List<Object> reportDetails = reportRepo.findTechDetails(custId,reportName);
 		return reportDetails;
 	}
+
 
 	public List<GenerateReportPOJO> retrieveAllData(int custId) {
 		List<Object[]> objList = reportRepo.generateReportDetails(custId);

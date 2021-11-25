@@ -86,7 +86,7 @@ $
 <body>
 	<div class="container register-form">
 		<div class="note">
-			<h3></h3>
+			<h3>Data Center</h3>
 		</div>
 
 		<div class="form-content">

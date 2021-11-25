@@ -57,6 +57,8 @@ function goBack() {
 		<input type="text" class="form-control" name="custId"
 						id="custId" hidden="true">
 						<button type="submit" class="btn btn-warning">Export</button>
+						<button type="button" class="btn btn-warning float-right ml-2"
+				onclick="goBack()">Back</button>
 		
 		</form>
 			<table class="table table-striped">
@@ -81,8 +83,6 @@ function goBack() {
 
 			</table>
 
-			<button type="button" class="btn btn-warning float-right ml-2"
-				onclick="goBack()">Back</button>
 		</div>
 	</div>
 
