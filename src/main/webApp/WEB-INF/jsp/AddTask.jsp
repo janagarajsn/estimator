@@ -12,41 +12,16 @@
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.bundle.js"></script>
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.js"></script>
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<style type="text/css">
-.note {
-	text-align: center;
-	height: 50px;
-	background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-	color: #fff;
-	font-weight: bold;
-	line-height: 80px;
-}
-
-.form-content {
-	padding: 5%;
-	border: 1px solid #ced4da;
-	margin-bottom: 2%;
-}
-
-.form-control {
-	border-radius: 1.5rem;
-}
-</style>
+<link rel="stylesheet" href="/css/dataCenter.css">
 <title>Task</title>
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("input[type='radio']").click(function() {
-			addTechnology();
-		});
+		loadTechnology();
 	});
-	function addTechnology() {
-		var activityName = $("input[name='activity_name']:checked").val();
+	function loadTechnology() {
 		$.ajax({
 			type : 'POST',
 			url : '/loadTechnology',
-			data : {
-				'activity_name' : activityName
-			},
 			cache : false,
 			success : function(data) {
 				var html = '';
@@ -76,7 +51,6 @@
 			type : 'POST',
 			url : '/addTask',
 			data : {
-				'activity_name' : activityName,
 				'tech_name' : techName,
 				'techId' : techId,
 				'task_name' : $("#task_name").val(),
@@ -84,15 +58,6 @@
 			},
 			cache : false,
 			success : function(data) {
-				addTechnology();
-				var html = '';
-				var len = data.length;
-				for (var i = 0; i < len; i++) {
-					html += '<option value="' + data[i][0] + '">' + data[i][1]
-							+ '</option>';
-				}
-				html += '</option>';
-				$('#technology').html(html);
 				alert("Task added Successfully");
 			},
 			error : function(e) {
@@ -118,25 +83,10 @@
 		<div class="note">
 			<h3>Add Task</h3>
 		</div>
-		
+		<div id="successMsgDiv" >
+			<label id="successMsg" style="color:green">${message}</label>
+		</div>
 		<div class="form-content">
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Select Your Option</label>
-				<div class="col-sm-10">
-					<div class="custom-control custom-radio custom-control-inline">
-						<input type="radio" id="customRadioInline1" name="activity_name"
-							required value="DC2DC" class="custom-control-input"> <label
-							class="custom-control-label" for="customRadioInline1"> DC
-							To DC</label>
-					</div>
-					<div class="custom-control custom-radio custom-control-inline">
-						<input type="radio" id="customRadioInline2" value="DC2C"
-							name="activity_name" class="custom-control-input"> <label
-							class="custom-control-label" for="customRadioInline2">DC
-							to Cloud DC</label>
-					</div>
-				</div>
-			</div>
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Technology</label>
 				<div class="form-group mx-sm-3 mb-2">
@@ -161,8 +111,8 @@
 			</div>
 			<button type="button" class="btn btn-primary" onclick="addTask()">Add
 				Task</button>
-			<button type="button" class="btn btn-warning float-right ml-2"
-				onclick="goBack();">Back</button>
+			<button type="button" class="btn btn-warning center"
+				onclick="location.href = '/admin';">Cancel</button>
 		</div>
 	</div>
 

@@ -73,6 +73,7 @@ public class ExportData {
             createCell(row, columnCount++, user.getReport_name(), style);
             createCell(row, columnCount++, user.getTechnology_name(), style);
             createCell(row, columnCount++, user.getTask_name(), style);
+            createCell(row, columnCount++, user.getScope_Flag(), style);
             createCell(row, columnCount++, user.getEffort(), style);
              
         }

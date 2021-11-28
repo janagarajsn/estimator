@@ -4,6 +4,7 @@ public class GenerateReportPOJO {
 	private String report_name;
 	private String technology_name;
 	private String task_name;
+	private String scope_Flag;
 	private String effort;
 
 	public String getReport_name() {
@@ -30,14 +31,6 @@ public class GenerateReportPOJO {
 		this.task_name = task_name;
 	}
 
-	public GenerateReportPOJO(String report_name, String technology_name, String task_name, String effort) {
-		super();
-		this.report_name = report_name;
-		this.technology_name = technology_name;
-		this.task_name = task_name;
-		this.effort = effort;
-	}
-
 	public GenerateReportPOJO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -47,6 +40,24 @@ public class GenerateReportPOJO {
 	}
 
 	public void setEffort(String effort) {
+		this.effort = effort;
+	}
+
+	public String getScope_Flag() {
+		return scope_Flag;
+	}
+
+	public void setScope_Flag(String scope_Flag) {
+		this.scope_Flag = scope_Flag;
+	}
+
+	public GenerateReportPOJO(String report_name, String technology_name, String task_name, String scope_Flag,
+			String effort) {
+		super();
+		this.report_name = report_name;
+		this.technology_name = technology_name;
+		this.task_name = task_name;
+		this.scope_Flag = scope_Flag;
 		this.effort = effort;
 	}
 

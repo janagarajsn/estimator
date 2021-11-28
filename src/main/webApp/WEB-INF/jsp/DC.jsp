@@ -12,50 +12,24 @@
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.bundle.js"></script>
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.js"></script>
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<style type="text/css">
-.note {
-	text-align: center;
-	height: 50px;
-	background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-	color: #fff;
-	font-weight: bold;
-	line-height: 80px;
-}
+<link rel="stylesheet" href="/css/dataCenter.css">
 
-.form-content {
-	padding: 5%;
-	border: 1px solid #ced4da;
-	margin-bottom: 2%;
-}
 
-.form-control {
-	border-radius: 1.5rem;
-}
-</style>
 <script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
+	$(document).ready(function() {
 
-						$("input[type='radio']")
-								.click(
-										function() {
-											loadCustomer();
-										});
-						var activity_name = $(
-						"input[name='activityName']:checked")
-						.val();
-						if( activity_name ) {
-							loadCustomer();
-						}
-						
-					});
-	function loadCustomer(){
-		var activity_name = $(
-		"input[name='activityName']:checked")
-		.val();
-$
-		.ajax({
+		$("input[type='radio']").click(function() {
+			loadCustomer();
+		});
+		var activity_name = $("input[name='activityName']:checked").val();
+		if (activity_name) {
+			loadCustomer();
+		}
+
+	});
+	function loadCustomer() {
+		var activity_name = $("input[name='activityName']:checked").val();
+		$.ajax({
 			type : 'POST',
 			url : '/loadCustomer',
 			data : {
@@ -66,13 +40,11 @@ $
 				var html = '';
 				var len = data.length;
 				for (var i = 0; i < len; i++) {
-					html += '<option value="' + data[i][0] + '">'
-							+ data[i][1]
+					html += '<option value="' + data[i][0] + '">' + data[i][1]
 							+ '</option>';
 				}
 				html += '</option>';
-				$('#customerId')
-						.html(html);
+				$('#customerId').html(html);
 			},
 			error : function(e) {
 				alert("error");
@@ -87,24 +59,29 @@ $
 	<div class="container register-form">
 		<div class="note">
 			<h3>Data Center</h3>
+			<div></div>
 		</div>
-
+		<div  style="text-align: right">
+		<a href="/admin">Admin User?</a></div>
 		<div class="form-content">
 			<form>
 				<div class="form-group row">
-					<label class="col-sm-2 col-form-label">Select Your Option</label>
+					<label class="col-sm-2 col-form-label">Select Option:</label>
 					<div class="col-sm-10">
 						<div class="custom-control custom-radio custom-control-inline">
 							<input type="radio" id="customRadioInline1" required
-								name="activityName" class="custom-control-input" value="DC2DC">
+								name="activityName" class="custom-control-input" value="DC to DC">
 							<label class="custom-control-label" for="customRadioInline1">
-								DC To DC</label>
+								<img src="\images\dc.png" alt="DC to DC" title="DC to DC"
+								width="100" height="100" />
+							</label>
 						</div>
 						<div class="custom-control custom-radio custom-control-inline">
 							<input type="radio" id="customRadioInline2" name="activityName"
-								class="custom-control-input" value="DC2C"> <label
-								class="custom-control-label" for="customRadioInline2">DC
-								to Cloud DC</label>
+								class="custom-control-input" value="DC to Cloud"> <label
+								class="custom-control-label" for="customRadioInline2"> <img
+								src="\images\data-center-cl.png" alt="DC to Cloud"
+								title="DC to Cloud" width="100" height="100" /></label>
 						</div>
 					</div>
 
@@ -113,21 +90,20 @@ $
 					<label class="col-sm-2 col-form-label">Customer</label>
 					<div class="col-sm-10">
 						<div class="dropdown">
-							<select name="customerId" id="customerId" required>
+							<select name="customerId" id="customerId" >
 								<option value="0" selected="selected">--SELECT--</option>
 							</select>
-							<button type="button" class="btn btn-primary"
-								onclick="location.href = '/customer';">Add Customer</button>
-
 						</div>
 					</div>
 
 				</div>
+				<button type="submit" formaction="/customer" formmethod="GET"
+					class="btn btn-success">Add Customer</button>
+
 				<button type="submit" formaction="/addReport" formmethod="POST"
 					class="btn btn-primary">Add Report</button>
 				<button type="submit" formaction="/generateReport" formmethod="POST"
-					class="btn btn-warning float-center ml-2">Show
-					Report</button>
+					class="btn btn-warning float-center ml-2">Show Report</button>
 			</form>
 
 		</div>

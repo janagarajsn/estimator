@@ -12,12 +12,12 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 	public Integer max();
 
 
-	@Query(value = "SELECT TECH.technology_name,t.task_name,REP.effort FROM Report REP, Technology TECH,  Task t "
+	@Query(value = "SELECT TECH.technology_name,t.task_name,REP.effort,REP.scope_Flag FROM Report REP, Technology TECH,  Task t "
 			+ " WHERE t.task_id = REP.task_id and t.techid = TECH.techid and TECH.techid = REP.techid AND REP.cust_id = :custId and REP.report_name = :reportName")
 	public List<Object> findTechDetails(int custId, String reportName);
 
-	@Query(value = "SELECT REP.report_name,TECH.technology_name,t.task_name,REP.effort FROM Report REP, Technology TECH,  Task t "
-			+ " WHERE t.task_id = REP.task_id and t.techid = TECH.techid and TECH.techid = REP.techid AND REP.cust_id = :custId UNION SELECT '' as report_name,'' as technology_name, 'TOTAL' as task_name, SUM(effort) as effort from "
+	@Query(value = "SELECT REP.report_name,TECH.technology_name,t.task_name,REP.scope_Flag,REP.effort FROM Report REP, Technology TECH,  Task t "
+			+ " WHERE t.task_id = REP.task_id and t.techid = TECH.techid and TECH.techid = REP.techid AND REP.cust_id = :custId UNION SELECT '' as report_name,'' as technology_name, '' as task_name, 'Total' as scope_Flag, SUM(effort) as effort from "
 			+ "Report REP, Technology TECH,  Task t WHERE t.task_id = REP.task_id and t.techid = TECH.techid and TECH.techid = REP.techid AND REP.cust_id = :custId order by 1 desc",nativeQuery=true)
 	public List<Object[]> generateReportDetails(int custId);
 

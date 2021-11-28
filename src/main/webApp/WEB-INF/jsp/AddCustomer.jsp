@@ -13,30 +13,16 @@
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.bundle.js"></script>
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.js"></script>
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<style type="text/css">
-.note {
-	text-align: center;
-	height: 50px;
-	background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-	color: #fff;
-	font-weight: bold;
-	line-height: 80px;
-}
+<link rel="stylesheet" href="/css/dataCenter.css">
 
-.form-content {
-	padding: 5%;
-	border: 1px solid #ced4da;
-	margin-bottom: 2%;
-}
-
-.form-control {
-	border-radius: 1.5rem;
-}
-</style>
 <script type="text/javascript">
-function goBack() {
-	  window.history.back();
-}
+	$(document).ready(function() {
+		var activityName = $('#activityName').val();
+		if (activityName == "DC to DC") {
+			$('#cloudDropdown').hide();
+			
+		}
+	});
 </script>
 <title>Customer</title>
 </head>
@@ -47,39 +33,75 @@ function goBack() {
 		</div>
 
 		<div class="form-content">
-			<form method="POST" 
-          action="/addCustomer" >
+			<form method="POST" action="/addCustomer">
 				<div class="form-group row">
-					<label class="col-sm-2 col-form-label">Customer Name</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" name="customer_name"
+					<label class="col-sm-2 col-form-label">Activity Name : </label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="text" class="form-control" id="activityName" readonly="readonly"
+							 name="activityName" value="${activityName}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Customer Name : </label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="text" class="form-control" name="customerName" required="required"
 							placeholder="Enter Name">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label class="col-sm-2 col-form-label">Select Your Option</label>
-					<div class="col-sm-10">
-						<div class="custom-control custom-radio custom-control-inline">
-							<input type="radio" id="customRadioInline1" name="activity_name" value="DC2DC"
-								class="custom-control-input"> <label
-								class="custom-control-label" for="customRadioInline1">
-								DC To DC</label>
-						</div>
-						<div class="custom-control custom-radio custom-control-inline">
-							<input type="radio" id="customRadioInline2" value="DC2C"
-								name="activity_name" class="custom-control-input">
-							<label class="custom-control-label" for="customRadioInline2">DC
-								to Cloud DC</label>
-						</div>
+					<label class="col-sm-2 col-form-label">Number of Server : </label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="number" class="form-control" name="server"
+							placeholder="Server">
 					</div>
 				</div>
-				<button type="submit" class="btn btn-primary">Submit</button>
-				<button type="button" class="btn btn-warning float-right ml-2"
-				onclick="goBack()">Back</button>
+				<!-- <div class="form-group row">
+					<label class="col-sm-2 col-form-label">Location : </label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="text" class="form-control" name="location"
+							placeholder="location">
+					</div>
+				</div> -->
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Duration of
+						Project: </label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="number" class="form-control" name="duration"
+							placeholder="duration(Months)">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Activity Type: </label>
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						<label class="btn btn-outline-info active"> <input type="radio"
+							name="activityType" id="transition" value="transition"
+							autocomplete="off" checked> Transition
+						</label> <label class="btn btn-outline-info"> <input type="radio"
+							name="activityType" id="transformation" value="transformation"
+							autocomplete="off"> Transformation
+						</label>
+					</div>
+				</div>
+				<div class="form-group row" id="cloudDropdown">
+					<label class="col-sm-2 col-form-label">Cloud Vendor</label>
+					<div class="col-sm-10">
+						<div class="dropdown">
+							<select name="cloudVendor" id="cloudVendor" required>
+								<option value="0" selected="selected">--SELECT--</option>
+								<option value="AWS">AWS</option>
+								<option value="Azure">Microsoft Azure</option>
+								<option value="GCP">Google Cloud</option>
+								<option value="Private">Private Cloud</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+				<button type="submit" class="btn btn-success">Submit</button>
+				<button type="button" class="btn btn-warning center"
+					onclick="location.href = '/';">Cancel</button>
 			</form>
 		</div>
 	</div>
-
-	<%-- welcome ${name} ! --%>
 </body>
 </html>

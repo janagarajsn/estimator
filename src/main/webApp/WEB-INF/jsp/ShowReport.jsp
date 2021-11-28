@@ -67,6 +67,7 @@ function goBack() {
 						<th>Report Name</th>
 						<th>Technology Name</th>
 						<th>Task Name</th>
+						<th>Scope</th>
 						<th>Effort</th>
 					</tr>
 				</thead>
@@ -76,6 +77,7 @@ function goBack() {
 							<th>${item.report_name}</th>
 							<td>${item.technology_name}</td>
 							<td>${item.task_name}</td>
+							<td>${item.scope_Flag}</td>
 							<td>${item.effort}</td>
 						</tr>
 					</c:forEach>

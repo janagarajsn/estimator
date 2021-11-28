@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity.Customer;
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Model.userInputsService;
 
 @Controller
@@ -29,7 +28,11 @@ public class DataCenterController {
 	public String showFirstPage() {
 		return "DC";
 	}
-
+	@RequestMapping(value = "/addReport", method = RequestMethod.GET)
+	public String showReportPage() {
+		return "AddReport";
+	}
+	
 	@RequestMapping(value = "/addReport", method = RequestMethod.POST)
 	public String showReportPage(@RequestParam String activityName, @RequestParam int customerId, ModelMap model) {
 		String customerName = userService.findCustomerName(customerId);
@@ -40,13 +43,15 @@ public class DataCenterController {
 	}
 
 	@RequestMapping(value = "/customer", method = RequestMethod.GET)
-	public ModelAndView showForm() {
-		return new ModelAndView("AddCustomer", "customer", new Customer());
+	public String showForm(@RequestParam String activityName, ModelMap model) {
+		model.addAttribute("activityName", activityName);
+		return "AddCustomer";
 	}
 
 	@RequestMapping(value = "/addCustomer", method = RequestMethod.POST)
-	public String addCustomer(@RequestParam String customer_name, @RequestParam String activity_name) {
-		userService.addCustomer(customer_name, activity_name);
+	public String addCustomer(@RequestParam Map<String,String> allRequestParams) {
+//		allRequestParams.forEach((k,v)->System.out.println("key: " + k + ", value: " + v));
+		userService.addCustomer(allRequestParams);
 		return "DC";
 	}
 
@@ -57,8 +62,8 @@ public class DataCenterController {
 	}
 
 	@RequestMapping(value = "/loadTechnology", method = RequestMethod.POST)
-	public @ResponseBody List<Object> loadTechnology(@RequestParam String activity_name) {
-		List<Object> techName = userService.loadTechnology(activity_name);
+	public @ResponseBody List<Object> loadTechnology() {
+		List<Object> techName = userService.loadTechnology();
 		return techName;
 	}
 
@@ -69,9 +74,9 @@ public class DataCenterController {
 	}
 
 	@RequestMapping(value = "/saveReport", method = RequestMethod.POST)
-	public @ResponseBody List<Object> saveReport(@RequestParam int techId, @RequestParam int taskId, @RequestParam int custId,
-			@RequestParam int effort, @RequestParam String reportName) {
-		List<Object> reportDetails = userService.saveReport(techId, taskId, custId, effort, reportName);
+	public @ResponseBody List<Object> saveReport(@RequestParam int scopeId,@RequestParam int techId, @RequestParam String[] taskId, @RequestParam int custId,@RequestParam String[]  effort,
+			 @RequestParam String reportName) {
+		List<Object> reportDetails =  userService.saveReport(scopeId,techId, taskId, custId, effort,reportName);
 		return reportDetails;
 	}
 	
@@ -92,5 +97,22 @@ public class DataCenterController {
         ExportData excelExporter = new ExportData(userService.retrieveAllData(custId));
         excelExporter.export(response);
 	}
-
+	
+	
+	@RequestMapping(value = "/loadScope", method = RequestMethod.POST)
+	public @ResponseBody List<Object> loadScope() {
+		List<Object> scopeName = userService.loadScope();
+		return scopeName;
+	}
+	
+	@RequestMapping(value = "/loadScopeTechnology", method = RequestMethod.POST)
+	public @ResponseBody List<Object> loadScopeTechnology(@RequestParam int scopeId) {
+		List<Object> techName = userService.loadScopeTechnology(scopeId);
+		return techName;
+	}
+	@RequestMapping(value = "/loadScopeByCustId", method = RequestMethod.POST)
+	public @ResponseBody List<Object> loadScopeByCustId(@RequestParam int custId) {
+		List<Object> scopeName = userService.loadScopeByCustId(custId);
+		return scopeName;
+	}
 }

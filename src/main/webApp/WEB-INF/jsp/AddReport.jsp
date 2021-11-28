@@ -12,39 +12,66 @@
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.bundle.js"></script>
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.js"></script>
 <script src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/css/dataCenter.css">
 
-<style type="text/css">
-.note {
-	text-align: center;
-	height: 50px;
-	background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-	color: #fff;
-	font-weight: bold;
-	line-height: 80px;
-}
 
-.form-content {
-	padding: 5%;
-	border: 1px solid #ced4da;
-	margin-bottom: 2%;
-}
-
-.form-control {
-	border-radius: 1.5rem;
-}
-</style>
 <title>Report</title>
 <script type="text/javascript">
+var taskId = new Array();
+var effort = new Array();
 	$(document).ready(function() {
-		loadTechnology();
+		loadScope();
+		   $('#checkAll').click(function() {
+			    var isChecked = $(this).prop("checked");
+			    $('#taskTable tbody tr:has(td)').find('input[type="checkbox"]').prop('checked', isChecked);
+			    $(".effortCls").attr("disabled", !isChecked); 
+			  });
+		  
 	});
-	function loadTechnology() {
-		var activityName = $("#activityName").text();
+	function getCurrentRow(_this) {
+		var isChecked = $(_this).find('input[type="checkbox"]').prop("checked");
+		if (isChecked) {
+			  $(_this).find(".effortCls").attr("disabled", !isChecked);
+		 }
+		else{
+			$(_this).find(".effortCls").attr("disabled", !isChecked);
+		}
+	}
+	function loadScope() {
+		var custId = $('#custId').text();
 		$.ajax({
 			type : 'POST',
-			url : '/loadTechnology',
+			url : '/loadScopeByCustId',
 			data : {
-				'activity_name' : activityName
+				'custId' : custId
+			},
+			cache : false,
+			success : function(data) {
+				var html = '';
+				var len = data.length;
+				for (var i = 0; i < len; i++) {
+					html += '<option value="' + data[i][0] + '">' + data[i][1]
+							+ '</option>';
+				}
+				html += '</option>';
+				$('#scope').html(html);
+				loadTechnology();
+			},
+			error : function(xhr, statusText, err) {
+				if (xhr.status == 400)
+					alert("Error: Please Enter all the details");
+				else
+					alert("Error Occured");
+			}
+		});
+	}
+	function loadTechnology() {
+		var scopeId = $('#scope :selected').val();
+		$.ajax({
+			type : 'POST',
+			url : '/loadScopeTechnology',
+			data : {
+				'scopeId' : scopeId
 			},
 			cache : false,
 			success : function(data) {
@@ -80,67 +107,98 @@
 			success : function(data) {
 				var html = '';
 				var len = data.length;
+				$('#taskTable tbody').empty();
 				if (len > 0) {
+					$('#taskTable').show();
+					$('#showTasks').hide();
 					for (var i = 0; i < len; i++) {
-						html += '<option value="' + data[i][0] + '">'
-								+ data[i][1] + '</option>';
-					}
-				} else {
-					html += '<option value= 0 >--SELECT-- </option>';
+								html = "<tr onclick='getCurrentRow(this)' class = 'taskRowCls'><td><input type='checkbox'></td><td>"
+										+ " <label for=" + data[i][0] + ">"
+										+ data[i][1] + "</label></td><td><input type='number' class = 'effortCls' disabled name='effort' ></td></tr>";
+								$('#taskTable').append(html);
+							}
+						}
+				else{
+					$('#taskTable').hide();
+					$('#showTasks').show();
 				}
-				html += '</option>';
-				$('#taskName').html(html);
-			},
-			error : function(e) {
-				alert("error");
-			}
+					},
+					error : function(xhr, statusText, err) {
+						if (xhr.status == 400)
+							alert("Error: Please Enter all the details");
+						else
+							alert("Error Occured");
+					}
 
-		});
+				});
+	}
+	function getAllTaskId(){
+		taskId= [];
+		effort = [];
+	$("tr.taskRowCls").each(
+				function() {
+					var isChecked = $(this).find('input[type="checkbox"]')
+							.prop("checked");
+					if (isChecked) {
+						taskId.push($(this).find('label').attr("for"));
+						var currentEffort = $(this).find('input[type="number"]').val();
+						if (currentEffort === undefined || currentEffort === null || currentEffort === '' ) {
+							effort.push(0);
+						} else {
+							effort.push(currentEffort);
+						}
+					}
+				});
+
 	}
 	function saveReport() {
+		getAllTaskId();
+		var scopeId = $('#scope :selected').val();
 		var techId = $('#technology :selected').val();
-		var taskId = $('#taskName :selected').val();
 		var custId = $('#custId').text();
-		var effort = $('#effort').val();
 		var reportName = $('#reportName').val();
-		if ((reportName)){
+		if ((reportName)) {
 			$.ajax({
 				type : 'POST',
 				url : '/saveReport',
 				data : {
+					'scopeId' : scopeId,
 					'techId' : techId,
-					'taskId' : taskId,
+					'taskId' :taskId,
 					'custId' : custId,
-					'effort' : effort,
-					'reportName' : reportName
+					'reportName' : reportName,
+					'effort' : effort
 				},
+				traditional: true,
 				cache : false,
 				success : function(data) {
 					$('#dynTable tbody').empty();
+					if(data.length > 0){
+						$('#dynTable').show();
+						$('#showTaskDetails').hide();
 					for (var i = 0; i < data.length; i++) {
 						var rows = "<tr>" + "<td >" + data[i][0] + "</td>"
 								+ "<td >" + data[i][1] + "</td>" + "<td >"
-								+ data[i][2] + "</td>" + "</tr>";
+								+ data[i][2] + "</td>" + "<td >"
+								+ data[i][3] + "</td>"+ "</tr>";
 						$('#dynTable tbody').append(rows);
-						alert("Report Created");
+						
+					}
+					alert("Report Created");
 					}
 				},
-				 error: function(xhr, statusText, err){
-					 if(xhr.status == 400  )
-				        alert("Error: Please Enter all the details"); 
-					 else
-						 alert("Error Occured");
-				    }
+				error : function(xhr, statusText, err) {
+					if (xhr.status == 400)
+						alert("Error: Please Enter all the details");
+					else
+						alert("Error Occured");
+				}
 
 			});
-		}
-		else{
+		} else {
 			alert("Please enter all the details")
 		}
 
-	}
-	function goBack() {
-		window.history.back();
 	}
 </script>
 </head>
@@ -152,68 +210,81 @@
 
 		<div class="form-content">
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Activity Name</label>
+				<label class="col-sm-2 col-form-label">Activity Name :</label>
 				<div class="col-sm-10">
 					<label id="activityName" class="col-sm-2 col-form-label ">${activityName}</label>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Customer Name</label>
+				<label class="col-sm-2 col-form-label">Customer Name :</label>
 				<div class="col-sm-10">
 					<label class="col-sm-2 col-form-label">${customerName}</label> <label
 						id="custId" hidden="true">${customerId}</label>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Report Name</label>
+				<label class="col-sm-2 col-form-label">Report Name :</label>
 				<div class="form-group mx-sm-3 mb-2">
 					<input type="text" class="form-control" name="reportName"
 						id="reportName" placeholder="Report Name">
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Technology</label>
+				<label class="col-sm-2 col-form-label">Scope :</label>
+				<div class="form-group mx-sm-3 mb-2">
+					<select class="form-control" id="scope" onchange="loadTechnology()">
+						<option value="0" selected="selected">--SELECT--</option>
+					</select>
+				</div>
+				<button type="button" class="btn btn-primary"
+					onclick="location.href = '/scopeTech';">Add Scope
+					Technology</button>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Technology :</label>
 				<div class="form-group mx-sm-3 mb-2">
 					<select class="form-control" id="technology" onchange="loadTask()">
 						<option value="0" selected="selected">--SELECT--</option>
 					</select>
 				</div>
-				<button type="button" class="btn btn-primary"
-					onclick="location.href = '/technology';">Add Technology</button>
+
 			</div>
 			<div class="form-group row">
 				<label for="taskName" class="col-sm-2 col-form-label">Task
-					Name</label>
-				<div class="form-group mx-sm-3 mb-2">
-					<select class="form-control" id="taskName">
-						<option value="0" selected="selected">--SELECT--</option>
-					</select>
-				</div>
-				<button type="button" class="btn btn-primary"
-					onclick="location.href = '/task';">Add Task</button>
+					Name :</label>
+						<div id = "showTasks" style="font-weight: bold;" > Not Available</div>
+				<table id="taskTable" class="table table-striped" style="display: none;">
+					<thead class="thead-dark">
+						<tr>
+							<th><input type="checkbox" name="checkAll" id="checkAll"></th>
+							<th>Task Name</th>
+							<th >Effort(Phrs)</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Effort(Phrs)</label>
-				<div class="form-group mx-sm-3 mb-2">
-					<input type="text" class="form-control" name="effort" id="effort"
-						placeholder="Duration">
-				</div>
-			</div>
-			<table class="table table-striped" id="dynTable">
+				<label for="details" class="col-sm-2 col-form-label">Selected Task Details :</label>
+				<div id = "showTaskDetails" style="font-weight: bold;" > Not Available</div>
+			<table class="table table-striped" id="dynTable" style="display: none;">
 				<thead class="thead-dark">
-					<tr>
+					<tr >
 						<th>Technology Name</th>
 						<th>Task Name</th>
 						<th>Effort(Phrs)</th>
+						<th>Status</th>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
-
 			</table>
-			<button type="button" class="btn btn-primary" onclick="saveReport()">Save</button>
-			<button type="button" class="btn btn-warning float-right ml-2"
-				onclick="goBack()">Back</button>
+			</div>
+			<button type="button" class="btn btn-primary center"
+				onclick=" saveReport()">Save</button>
+			<button type="button" class="btn btn-warning center"
+				onclick="location.href = '/';">Cancel</button>
 
 		</div>
 	</div>

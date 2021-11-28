@@ -7,13 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 
 @Entity
-@IdClass(TechnologyId.class)
 public class Technology {
 	private int techid;
 	@Id
 	private String technology_name;
-	@Id
-	private String activity_name;
 	private String created_by;
 	private Date created_date;
 
@@ -26,11 +23,10 @@ public class Technology {
 		return techid;
 	}
 
-	public Technology(int techid, String technology_name, String activity_name, String created_by, Date created_date) {
+	public Technology(int techid, String technology_name,  String created_by, Date created_date) {
 		super();
 		this.techid = techid;
 		this.technology_name = technology_name;
-		this.activity_name = activity_name;
 		this.created_by = created_by;
 		this.created_date = created_date;
 	}
@@ -63,19 +59,13 @@ public class Technology {
 		this.technology_name = technology_name;
 	}
 
-	public String getActivity_name() {
-		return activity_name;
-	}
-
-	public void setActivity_name(String activity_name) {
-		this.activity_name = activity_name;
-	}
-
 	@Override
 	public String toString() {
-		return "Technology [techid=" + techid + ", technology_name=" + technology_name + ", activity_name="
-				+ activity_name + ", created_by=" + created_by + ", created_date=" + created_date + "]";
+		return "Technology [techid=" + techid + ", technology_name=" + technology_name + ", created_by=" + created_by
+				+ ", created_date=" + created_date + "]";
 	}
+
+
 
 	
 
