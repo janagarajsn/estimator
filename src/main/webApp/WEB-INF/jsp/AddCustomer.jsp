@@ -51,7 +51,7 @@
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label">Number of Server : </label>
 					<div class="form-group mx-sm-3 mb-2">
-						<input type="number" class="form-control" name="server"
+						<input type="number" class="form-control" name="server" required="required"
 							placeholder="Server">
 					</div>
 				</div>
@@ -66,7 +66,7 @@
 					<label class="col-sm-2 col-form-label">Duration of
 						Project: </label>
 					<div class="form-group mx-sm-3 mb-2">
-						<input type="number" class="form-control" name="duration"
+						<input type="number" class="form-control" name="duration" required="required"
 							placeholder="duration(Months)">
 					</div>
 				</div>

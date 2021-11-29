@@ -18,17 +18,14 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 
-		$("input[type='radio']").click(function() {
-			loadCustomer();
-		});
-		var activity_name = $("input[name='activityName']:checked").val();
+		var activity_name = $('#activityName').val();
 		if (activity_name) {
 			loadCustomer();
 		}
 
 	});
 	function loadCustomer() {
-		var activity_name = $("input[name='activityName']:checked").val();
+		var activity_name = $('#activityName').val();
 		$.ajax({
 			type : 'POST',
 			url : '/loadCustomer',
@@ -61,36 +58,23 @@
 			<h3>Data Center</h3>
 			<div></div>
 		</div>
-		<div  style="text-align: right">
-		<a href="/admin">Admin User?</a></div>
+		<div style="text-align: right">
+			<a href="/admin">Admin User?</a>
+		</div>
 		<div class="form-content">
 			<form>
 				<div class="form-group row">
-					<label class="col-sm-2 col-form-label">Select Option:</label>
-					<div class="col-sm-10">
-						<div class="custom-control custom-radio custom-control-inline">
-							<input type="radio" id="customRadioInline1" required
-								name="activityName" class="custom-control-input" value="DC to DC">
-							<label class="custom-control-label" for="customRadioInline1">
-								<img src="\images\dc.png" alt="DC to DC" title="DC to DC"
-								width="100" height="100" />
-							</label>
-						</div>
-						<div class="custom-control custom-radio custom-control-inline">
-							<input type="radio" id="customRadioInline2" name="activityName"
-								class="custom-control-input" value="DC to Cloud"> <label
-								class="custom-control-label" for="customRadioInline2"> <img
-								src="\images\data-center-cl.png" alt="DC to Cloud"
-								title="DC to Cloud" width="100" height="100" /></label>
-						</div>
+					<label class="col-sm-2 col-form-label">Activity Name : </label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="text" class="form-control" id="activityName" readonly="readonly"
+							 name="activityName" value="${activityName}">
 					</div>
-
 				</div>
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label">Customer</label>
 					<div class="col-sm-10">
 						<div class="dropdown">
-							<select name="customerId" id="customerId" >
+							<select name="customerId" id="customerId">
 								<option value="0" selected="selected">--SELECT--</option>
 							</select>
 						</div>
@@ -104,6 +88,8 @@
 					class="btn btn-primary">Add Report</button>
 				<button type="submit" formaction="/generateReport" formmethod="POST"
 					class="btn btn-warning float-center ml-2">Show Report</button>
+				<button type="button" class="btn btn-danger"
+				onclick="location.href = '/';">Cancel</button>
 			</form>
 
 		</div>
