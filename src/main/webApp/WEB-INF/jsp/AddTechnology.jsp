@@ -48,7 +48,7 @@
 
 				<button type="submit" class="btn btn-primary">Submit</button>
 				<button type="button" class="btn btn-warning center"
-					onclick="location.href = '/admin';">Cancel</button>
+					onclick="location.href = '/admin';">Back</button>
 			</form>
 		</div>
 	</div>
