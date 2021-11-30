@@ -89,7 +89,7 @@
 				<button type="submit" formaction="/generateReport" formmethod="POST"
 					class="btn btn-warning float-center ml-2">Show Report</button>
 				<button type="button" class="btn btn-danger"
-				onclick="location.href = '/';">Cancel</button>
+				onclick="location.href = '/';">Back</button>
 			</form>
 
 		</div>
