@@ -60,7 +60,7 @@
 				</div>
 				<button type="Submit" class="btn btn-primary">Add Scope</button>
 				<button type="button" class="btn btn-warning center"
-					onclick="location.href = '/admin';">Cancel</button>
+					onclick="location.href = '/admin';">Back</button>
 			</form>
 		</div>
 	</div>
