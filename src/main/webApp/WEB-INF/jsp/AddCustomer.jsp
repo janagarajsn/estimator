@@ -99,7 +99,7 @@
 				</div>
 				<button type="submit" class="btn btn-success">Submit</button>
 				<button type="button" class="btn btn-warning center"
-					onclick="location.href = '/';">Cancel</button>
+					onclick="location.href = '/';">Back</button>
 			</form>
 		</div>
 	</div>
