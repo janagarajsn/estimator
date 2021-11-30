@@ -284,7 +284,7 @@ var effort = new Array();
 			<button type="button" class="btn btn-primary center"
 				onclick=" saveReport()">Save</button>
 			<button type="button" class="btn btn-warning center"
-				onclick="location.href = '/';">Cancel</button>
+				onclick="location.href = '/';">Back</button>
 
 		</div>
 	</div>
