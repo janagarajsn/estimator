@@ -112,7 +112,7 @@
 			<button type="button" class="btn btn-primary" onclick="addTask()">Add
 				Task</button>
 			<button type="button" class="btn btn-warning center"
-				onclick="location.href = '/admin';">Cancel</button>
+				onclick="location.href = '/admin';">Back</button>
 		</div>
 	</div>
 
