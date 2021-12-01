@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Model.userInputsService;
 
 @Controller
+@SessionAttributes({ "activityName", "customerId","customerName" })
 public class DataCenterController {
 	@Autowired
 	userInputsService userService;
@@ -29,8 +32,15 @@ public class DataCenterController {
 		return "Welcome";
 	}
 
+	@RequestMapping(value = "/ShowCustomer", method = RequestMethod.GET)
+	public String showDCPage(ModelMap model) {
+		String activityName = (String) model.get("activityName");
+		model.put("activityName", activityName);
+		return "DC";
+	}
+
 	@RequestMapping(value = "/ShowCustomer", method = RequestMethod.POST)
-	public String showDCPage(@RequestParam String activityName,ModelMap model) {
+	public String showDCPage(@RequestParam String activityName, ModelMap model) {
 		model.addAttribute("activityName", activityName);
 		return "DC";
 	}
@@ -45,6 +55,7 @@ public class DataCenterController {
 		String customerName = userService.findCustomerName(customerId);
 		model.addAttribute("activityName", activityName);
 		model.addAttribute("customerName", customerName);
+		model.put("customerName",customerName);
 		model.addAttribute("customerId", customerId);
 		return "AddReport";
 	}
@@ -88,23 +99,44 @@ public class DataCenterController {
 		List<Object> reportDetails = userService.saveReport(scopeId, techId, taskId, custId, effort, reportName);
 		return reportDetails;
 	}
+	@RequestMapping(value = "/editReport", method = RequestMethod.GET)
+	public ModelAndView editReport( @RequestParam int custId,@RequestParam int reportId,@RequestParam String customerName, @RequestParam String reportName,ModelAndView mod) {
+		mod.addObject("customerName", customerName);
+		mod.addObject("reportName", reportName);
+		mod.setViewName("EditReport");
+		mod.addObject("custId", custId);
+		mod.addObject("results",userService.editReport(custId, reportId));
+		return mod;
+	}
+	@RequestMapping(value = "/generateReport", method = RequestMethod.GET)
+	public String retrieveReportData() {
+		return "DC";
+	}
 
 	@RequestMapping(value = "/generateReport", method = RequestMethod.POST)
-	public String retrieveAllData(@RequestParam int customerId, ModelMap model) {
-		model.put("results", userService.retrieveAllData(customerId));
+	public String retrieveReportData(@RequestParam int customerId, ModelMap model) {
+		model.put("results", userService.retrieveReportData(customerId));
 		model.put("custId", customerId);
 		return "ShowReport";
 	}
 
+	@RequestMapping(value = "/showDetailedReport", method = RequestMethod.GET)
+	public String retrieveAllData(@RequestParam int custId, @RequestParam int reportId, ModelMap model) {
+		model.put("results", userService.retrieveAllData(custId,reportId));
+		model.put("custId", custId);
+		model.put("reportId", reportId);
+		return "ShowDetailedReport";
+	}
+
 	@RequestMapping(value = "/export", method = RequestMethod.GET)
-	public void exportData(HttpServletResponse response, @RequestParam int custId) throws IOException {
+	public void exportData(HttpServletResponse response, @RequestParam int custId, @RequestParam int reportId) throws IOException {
 		response.setContentType("application/octet-stream");
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachment; filename=Report_" + currentDateTime + ".xlsx";
 		response.setHeader(headerKey, headerValue);
-		ExportData excelExporter = new ExportData(userService.retrieveAllData(custId));
+		ExportData excelExporter = new ExportData(userService.retrieveAllData(custId,reportId));
 		excelExporter.export(response);
 	}
 

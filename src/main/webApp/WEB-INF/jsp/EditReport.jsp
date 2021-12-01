@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -174,8 +175,6 @@ var effort = new Array();
 				success : function(data) {
 					$('#dynTable tbody').empty();
 					if(data.length > 0){
-						$('#dynTable').show();
-						$('#showTaskDetails').hide();
 					for (var i = 0; i < data.length; i++) {
 						var rows = "<tr>" + "<td >" + data[i][0] + "</td>"
 								+ "<td >" + data[i][1] + "</td>" + "<td >"
@@ -206,7 +205,7 @@ var effort = new Array();
 <body>
 	<div class="container register-form">
 		<div class="note">
-			<h4>Create Report</h4>
+			<h4>Edit Report</h4>
 		</div>
 
 		<div class="form-content">
@@ -220,14 +219,14 @@ var effort = new Array();
 				<label class="col-sm-2 col-form-label">Customer Name :</label>
 				<div class="col-sm-10">
 					<label class="col-sm-2 col-form-label">${customerName}</label> <label
-						id="custId" hidden="true">${customerId}</label>
+						id="custId" hidden="true">${custId}</label>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Report Name :</label>
 				<div class="form-group mx-sm-3 mb-2">
-					<input type="text" class="form-control" name="reportName"
-						id="reportName" placeholder="Report Name">
+					<input type="text" class="form-control" name="reportName" readonly="readonly"
+						id="reportName" placeholder="Report Name" value="${reportName}">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -268,18 +267,26 @@ var effort = new Array();
 			</div>
 			<div class="form-group row">
 				<label for="details" class="col-sm-2 col-form-label">Selected Task Details :</label>
-				<div id = "showTaskDetails" style="font-weight: bold;" > Not Available</div>
-			<table class="table table-striped" id="dynTable" style="display: none;">
+			<table class="table table-striped" id="dynTable" >
 				<thead class="thead-dark">
 					<tr >
 						<th>Scope </th>
 						<th>Technology </th>
 						<th>Task </th>
-						<th>Effort(Phrs)</th>
 						<th>Status</th>
+						<th>Effort(Phrs)</th>
 					</tr>
 				</thead>
-				<tbody>
+					<tbody>
+					<c:forEach items="${results}" var="item">
+						<tr>
+							<td>${item.scope_name}</td>
+							<td>${item.technology_name}</td>
+							<td>${item.task_name}</td>
+							<td>${item.scope_Flag}</td>
+							<td>${item.effort}</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 			</div>

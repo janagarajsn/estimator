@@ -39,6 +39,7 @@ $(document)
 .ready(
 		function() {
 		    $('#custId').val(${custId});
+		    $('#reportId').val(${reportId});
 		});
 		
 </script>
@@ -50,40 +51,40 @@ $(document)
 		</div>
 
 		<div class="table-responsive">
+			<form action="/export">
 				<input type="text" class="form-control" name="custId" id="custId"
-					hidden="true">
-			<button type="button" class="btn btn-warning float-right ml-2"
+					hidden="true"> <input type="text" class="form-control"
+					name="reportId" id="reportId" hidden="true">
+				<button type="submit" class="btn btn-warning">Export</button>
+				<button type="button" class="btn btn-warning float-right ml-2"
 					onclick="location.href = '/ShowCustomer';">Back</button>
 
+			</form>
 			<table class="table table-striped">
 				<thead class="thead-dark">
 					<tr>
 						<th>Report Name</th>
-						<th>Customer Name</th>
-						<th>View</th>
-						<th>Update </th>
-						<th>Export </th>
+						<th>Scope</th>
+						<th>Technology</th>
+						<th>Task</th>
+						<th>Scope</th>
+						<th>Effort</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach items="${results}" var="item">
 						<tr>
-							<td>${item.report_name}</td>
-							<td>${item.customer_name}</td>
-							<td><a type="button" class="btn btn-secondary"
-								href="/showDetailedReport?custId=${custId}&reportId=${item.report_id}">View Report</a></td>
-							<td><a type="button" class="btn btn-primary"
-								href="/editReport?custId=${custId}&reportId=${item.report_id}&customerName=${item.customer_name}&reportName=${item.report_name}">Edit Report</a></td>
-									<td><a type="button" class="btn btn-success"
-								href="/export?custId=${custId}&reportId=${item.report_id}">Download</a></td>
+							<th>${item.report_name}</th>
+							<th>${item.scope_name}</th>
+							<td>${item.technology_name}</td>
+							<td>${item.task_name}</td>
+							<td>${item.scope_Flag}</td>
+							<td>${item.effort}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
-
 			</table>
-
 		</div>
 	</div>
-
 </body>
 </html>

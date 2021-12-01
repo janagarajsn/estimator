@@ -38,11 +38,13 @@ public class ExportData {
         font.setFontHeight(16);
         style.setFont(font);
          
-        createCell(row, 0, "Report Name", style);      
-        createCell(row, 1, "Technology Name", style);       
-        createCell(row, 2, "Task Name", style);    
-        createCell(row, 3, "Effort", style);
-         
+        createCell(row, 0, "Report Name", style);  
+        createCell(row, 1, "Scope Name", style); 
+        createCell(row, 2, "Technology Name", style);       
+        createCell(row, 3, "Task Name", style);    
+        createCell(row, 4, "Status", style);
+        createCell(row, 5, "Effort", style);
+
     }
      
     private void createCell(Row row, int columnCount, Object value, CellStyle style) {
@@ -71,6 +73,7 @@ public class ExportData {
             int columnCount = 0;
              
             createCell(row, columnCount++, user.getReport_name(), style);
+            createCell(row, columnCount++, user.getScope_name(), style);
             createCell(row, columnCount++, user.getTechnology_name(), style);
             createCell(row, columnCount++, user.getTask_name(), style);
             createCell(row, columnCount++, user.getScope_Flag(), style);

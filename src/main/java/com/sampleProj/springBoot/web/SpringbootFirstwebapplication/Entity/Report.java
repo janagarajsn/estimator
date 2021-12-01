@@ -5,22 +5,20 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 public class Report {
 	
-	@Id
 	@GeneratedValue
 	private int report_id;
-	private int scope_id;
-	private int techid;
-	private int task_id;
+	@Id
+	@PrimaryKeyJoinColumn
+	private String report_name;
 	private int cust_id;
-	private int effort;
 	private String created_by;
 	private Date created_date;
-	private String report_name;
-	private String scope_Flag;
+	
 	
 	public Report() {
 		// TODO Auto-generated constructor stub
@@ -34,21 +32,6 @@ public class Report {
 		this.report_id = report_id;
 	}
 
-	public int getTechid() {
-		return techid;
-	}
-
-	public void setTechid(int techid) {
-		this.techid = techid;
-	}
-
-	public int getTask_id() {
-		return task_id;
-	}
-
-	public void setTask_id(int task_id) {
-		this.task_id = task_id;
-	}
 
 	public int getCust_id() {
 		return cust_id;
@@ -58,13 +41,6 @@ public class Report {
 		this.cust_id = cust_id;
 	}
 
-	public int getEffort() {
-		return effort;
-	}
-
-	public void setEffort(int effort) {
-		this.effort = effort;
-	}
 
 	public String getCreated_by() {
 		return created_by;
@@ -90,44 +66,22 @@ public class Report {
 	public void setReport_name(String report_name) {
 		this.report_name = report_name;
 	}
-	public int getScope_id() {
-		return scope_id;
-	}
-
-	public void setScope_id(int scope_id) {
-		this.scope_id = scope_id;
-	}
-
-	public String getScope_Flag() {
-		return scope_Flag;
-	}
-
-	public void setScope_Flag(String scope_Flag) {
-		this.scope_Flag = scope_Flag;
-	}
 
 	@Override
 	public String toString() {
-		return "Report [report_id=" + report_id + ", scope_id=" + scope_id + ", techid=" + techid + ", task_id="
-				+ task_id + ", cust_id=" + cust_id + ", effort=" + effort + ", created_by=" + created_by
-				+ ", created_date=" + created_date + ", report_name=" + report_name + ", scope_Flag=" + scope_Flag
-				+ "]";
+		return "Report [report_id=" + report_id + ", report_name=" + report_name + ", cust_id=" + cust_id
+				+ ", created_by=" + created_by + ", created_date=" + created_date + "]";
 	}
 
-	public Report(int report_id, int scope_id, int techid, int task_id, int cust_id, int effort, String created_by,
-			Date created_date, String report_name, String scope_Flag) {
+	public Report(int report_id, String report_name, int cust_id, String created_by, Date created_date) {
 		super();
 		this.report_id = report_id;
-		this.scope_id = scope_id;
-		this.techid = techid;
-		this.task_id = task_id;
+		this.report_name = report_name;
 		this.cust_id = cust_id;
-		this.effort = effort;
 		this.created_by = created_by;
 		this.created_date = created_date;
-		this.report_name = report_name;
-		this.scope_Flag = scope_Flag;
 	}
+
 
 
 		

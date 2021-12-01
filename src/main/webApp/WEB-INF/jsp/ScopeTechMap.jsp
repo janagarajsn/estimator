@@ -107,7 +107,7 @@
 				</div>
 				<button type="Submit" class="btn btn-primary">Submit</button>
 				<button type="button" class="btn btn-warning center"
-					onclick="location.href = '/'">Back</button>
+					onclick="location.href = '/addReport'">Back</button>
 			</form>
 		</div>
 	</div>

@@ -6,6 +6,9 @@ public class GenerateReportPOJO {
 	private String task_name;
 	private String scope_Flag;
 	private String effort;
+	private String customer_name;
+	private int report_id;
+	private String scope_name;
 
 	public String getReport_name() {
 		return report_name;
@@ -51,14 +54,35 @@ public class GenerateReportPOJO {
 		this.scope_Flag = scope_Flag;
 	}
 
-	public GenerateReportPOJO(String report_name, String technology_name, String task_name, String scope_Flag,
-			String effort) {
-		super();
-		this.report_name = report_name;
-		this.technology_name = technology_name;
-		this.task_name = task_name;
-		this.scope_Flag = scope_Flag;
-		this.effort = effort;
+
+	public String getCustomer_name() {
+		return customer_name;
+	}
+
+	public void setCustomer_name(String customer_name) {
+		this.customer_name = customer_name;
+	}
+
+	public int getReport_id() {
+		return report_id;
+	}
+
+	public void setReport_id(int report_id) {
+		this.report_id = report_id;
+	}
+
+	/**
+	 * @return the scope_name
+	 */
+	public String getScope_name() {
+		return scope_name;
+	}
+
+	/**
+	 * @param scope_name the scope_name to set
+	 */
+	public void setScope_name(String scope_name) {
+		this.scope_name = scope_name;
 	}
 
 }

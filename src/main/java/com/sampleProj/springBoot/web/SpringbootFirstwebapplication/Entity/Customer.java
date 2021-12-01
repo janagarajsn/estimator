@@ -14,6 +14,7 @@ public class Customer {
 	private String activity_name;
 	@Id
 	private String customer_name;
+	@Id
 	private String activity_type;
 	private int duration;
 	private int numberOfServer;
