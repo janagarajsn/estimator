@@ -38,15 +38,14 @@
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label">Activity Type: </label>
 					<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						<!-- 						<label class="btn btn-outline-info active"> <input -->
-						<!-- 							type="radio" name="activityType" id="transition" -->
-						<!-- 							value="transition" autocomplete="off" checked> Transition -->
-						<!-- 						</label>  -->
-						<label class="btn btn-outline-info"> <input type="radio"
-							name="activityType" id="transformation" value="transformation"
+						<label class="btn btn-outline-info active"> <input
+							type="radio" name="activityType" id="transition"
+							value="Transition" autocomplete="off" checked> Transition
+						</label> <label class="btn btn-outline-info"> <input type="radio"
+							name="activityType" id="transformation" value="Transformation"
 							autocomplete="off"> Transformation
 						</label><label class="btn btn-outline-info"> <input type="radio"
-							name="activityType" id="both" value="both" autocomplete="off">
+							name="activityType" id="both" value="Both" autocomplete="off">
 							Both
 						</label>
 					</div>

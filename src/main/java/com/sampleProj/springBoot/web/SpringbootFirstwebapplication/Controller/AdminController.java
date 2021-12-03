@@ -25,9 +25,9 @@ public class AdminController {
 
 	@RequestMapping(value = "/addTechnology", method = RequestMethod.POST)
 	public ModelAndView addTechnology(@RequestParam String technology_name) {
-		adminService.addTechnology(technology_name);
+		String message = adminService.addTechnology(technology_name);
 		 ModelAndView modelAndView = new ModelAndView("AddTechnology");
-		    modelAndView.addObject("message", "Technology Added");
+		    modelAndView.addObject("message", message);
 		return modelAndView;
 	}
 
@@ -37,10 +37,12 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/addTask", method = RequestMethod.POST)
-	public String addTask(@RequestParam String tech_name, @RequestParam int techId, 
+	public ModelAndView addTask(@RequestParam String tech_name, @RequestParam int techId, 
 			@RequestParam String task_name, @RequestParam String task_desc) {
-		adminService.addTask(tech_name, techId,  task_name, task_desc);
-		return "AddTask";
+		String message = adminService.addTask(tech_name, techId,  task_name, task_desc);
+		 ModelAndView modelAndView = new ModelAndView("AddTask");
+		    modelAndView.addObject("message", message);
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/scope", method = RequestMethod.GET)
@@ -50,9 +52,9 @@ public class AdminController {
 
 	@RequestMapping(value = "/addScope", method = RequestMethod.POST)
 	public ModelAndView addScope(@RequestParam String activityType, @RequestParam String scopeName) {
-		adminService.addScope(activityType, scopeName);
+		String message = adminService.addScope(activityType, scopeName);
 		 ModelAndView modelAndView = new ModelAndView("Scope");
-		    modelAndView.addObject("message", "Scope Added");
+		    modelAndView.addObject("message", message);
 		return modelAndView;
 	}
 

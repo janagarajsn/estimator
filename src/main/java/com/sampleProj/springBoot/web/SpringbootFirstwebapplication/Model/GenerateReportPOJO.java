@@ -1,5 +1,10 @@
 package com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity.Customer;
+
 public class GenerateReportPOJO {
 	private String report_name;
 	private String technology_name;
@@ -9,6 +14,8 @@ public class GenerateReportPOJO {
 	private String customer_name;
 	private int report_id;
 	private String scope_name;
+	private String activity_type;
+	private List<Object> customerList = new ArrayList<Object>();
 
 	public String getReport_name() {
 		return report_name;
@@ -54,7 +61,6 @@ public class GenerateReportPOJO {
 		this.scope_Flag = scope_Flag;
 	}
 
-
 	public String getCustomer_name() {
 		return customer_name;
 	}
@@ -71,18 +77,28 @@ public class GenerateReportPOJO {
 		this.report_id = report_id;
 	}
 
-	/**
-	 * @return the scope_name
-	 */
 	public String getScope_name() {
 		return scope_name;
 	}
 
-	/**
-	 * @param scope_name the scope_name to set
-	 */
 	public void setScope_name(String scope_name) {
 		this.scope_name = scope_name;
+	}
+
+	public String getActivity_type() {
+		return activity_type;
+	}
+
+	public void setActivity_type(String activity_type) {
+		this.activity_type = activity_type;
+	}
+
+	public List<Object> getCustomerList() {
+		return customerList;
+	}
+
+	public void setCustomerList(List<Object> customerList) {
+		this.customerList = customerList;
 	}
 
 }

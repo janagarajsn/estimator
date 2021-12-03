@@ -16,7 +16,9 @@
 .form-control {
 	border-radius: 1.5rem;
 }
-
+input {
+    margin: .4rem;
+}
 label:before {
   background-color: white;
   color: white;

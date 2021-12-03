@@ -14,7 +14,10 @@ public interface ScopeRepository extends JpaRepository<Scope, Integer> {
 	@Query(value = "SELECT scope_id,scope_name FROM Scope")
 	public List<Object> findByActivityName();
 
-	@Query(value = "select s.scope_id, s.scope_name from Scope s,Customer c where  c.id = :custId and (s.activity_type = c.activity_type or s.activity_type='both')")
-	public List<Object> findBycustId(int custId);
+	@Query(value = "SELECT scope_name FROM Scope where scope_name = :scopeName and activity_type=:activityType")
+	public String findByScopeName(String scopeName, String activityType);
+	
+	@Query(value = "SELECT scope_id,scope_name FROM Scope where activity_type in (:activityType,'Both')")
+	public List<Object> findByActivityType(String activityType);
 
 }

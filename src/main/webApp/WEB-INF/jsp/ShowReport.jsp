@@ -50,40 +50,44 @@ $(document)
 		</div>
 
 		<div class="table-responsive">
+			<div style="text-align: center;">
 				<input type="text" class="form-control" name="custId" id="custId"
-					hidden="true">
-			<button type="button" class="btn btn-warning float-right ml-2"
+					hidden="true"> <label id="customer_name"
+					class="col-sm-2 col-form-label " style="font-weight: bold;font-style: italic;color: blue; font-size: 20px;"> ${customerName}</label>
+				<button type="button" class="btn btn-warning float-right ml-2"
 					onclick="location.href = '/ShowCustomer';">Back</button>
+			</div>
+
 
 			<table class="table table-striped">
 				<thead class="thead-dark">
 					<tr>
 						<th>Report Name</th>
-						<th>Customer Name</th>
+						<th>Activity Type</th>
 						<th>View</th>
-						<th>Update </th>
-						<th>Export </th>
+						<th>Update</th>
+						<th>Export</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach items="${results}" var="item">
 						<tr>
 							<td>${item.report_name}</td>
-							<td>${item.customer_name}</td>
-							<td><a type="button" class="btn btn-secondary"
-								href="/showDetailedReport?custId=${custId}&reportId=${item.report_id}">View Report</a></td>
+							<td>${item.activity_type}</td>
 							<td><a type="button" class="btn btn-primary"
-								href="/editReport?custId=${custId}&reportId=${item.report_id}&customerName=${item.customer_name}&reportName=${item.report_name}">Edit Report</a></td>
-									<td><a type="button" class="btn btn-success"
+								href="/showDetailedReport?custId=${custId}&reportId=${item.report_id}">View
+									Report</a></td>
+							<td><a type="button" class="btn btn-primary"
+								href="/editReport?custId=${custId}&reportId=${item.report_id}">Edit
+									Report</a></td>
+							<td><a type="button" class="btn btn-success"
 								href="/export?custId=${custId}&reportId=${item.report_id}">Download</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 
 			</table>
-
 		</div>
 	</div>
-
 </body>
 </html>

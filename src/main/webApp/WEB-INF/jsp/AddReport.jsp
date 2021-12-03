@@ -17,41 +17,48 @@
 
 <title>Report</title>
 <script type="text/javascript">
-var taskId = new Array();
-var effort = new Array();
-	$(document).ready(function() {
-		loadScope();
-		   $('#checkAll').click(function() {
-			    var isChecked = $(this).prop("checked");
-			    $('#taskTable tbody tr:has(td)').find('input[type="checkbox"]').prop('checked', isChecked);
-			    $(".effortCls").attr("disabled", !isChecked); 
-			  });
-		  
-	});
+	var taskId = new Array();
+	var effort = new Array();
+	$(document).ready(
+			function() {
+				loadScope();
+				$('#checkAll').click(
+						function() {
+							var isChecked = $(this).prop("checked");
+							$('#taskTable tbody tr:has(td)').find(
+									'input[type="checkbox"]').prop('checked',
+									isChecked);
+							$(".effortCls").attr("disabled", !isChecked);
+						});
+
+			});
 	function getCurrentRow(_this) {
 		var isChecked = $(_this).find('input[type="checkbox"]').prop("checked");
 		if (isChecked) {
-			  $(_this).find(".effortCls").attr("disabled", !isChecked);
-		 }
-		else{
+			$(_this).find(".effortCls").attr("disabled", !isChecked);
+		} else {
 			$(_this).find(".effortCls").attr("disabled", !isChecked);
 		}
 	}
 	function loadScope() {
-		var custId = $('#custId').text();
+		var activityType = $('input[name="activityType"]:checked').val();
 		$.ajax({
 			type : 'POST',
-			url : '/loadScopeByCustId',
+			url : '/loadScopeByActType',
 			data : {
-				'custId' : custId
+				'activityType' : activityType
 			},
 			cache : false,
 			success : function(data) {
 				var html = '';
 				var len = data.length;
-				for (var i = 0; i < len; i++) {
-					html += '<option value="' + data[i][0] + '">' + data[i][1]
-							+ '</option>';
+				if (len > 0) {
+					for (var i = 0; i < len; i++) {
+						html += '<option value="' + data[i][0] + '">'
+								+ data[i][1] + '</option>';
+					}
+				} else {
+					html += '<option value= 0 >--SELECT-- </option>';
 				}
 				html += '</option>';
 				$('#scope').html(html);
@@ -97,31 +104,32 @@ var effort = new Array();
 	}
 	function loadTask() {
 		var techId = $('#technology :selected').val();
-		$.ajax({
-			type : 'POST',
-			url : '/loadTask',
-			data : {
-				'techId' : techId
-			},
-			cache : false,
-			success : function(data) {
-				var html = '';
-				var len = data.length;
-				$('#taskTable tbody').empty();
-				if (len > 0) {
-					$('#taskTable').show();
-					$('#showTasks').hide();
-					for (var i = 0; i < len; i++) {
+		$
+				.ajax({
+					type : 'POST',
+					url : '/loadTask',
+					data : {
+						'techId' : techId
+					},
+					cache : false,
+					success : function(data) {
+						var html = '';
+						var len = data.length;
+						$('#taskTable tbody').empty();
+						if (len > 0) {
+							$('#taskTable').show();
+							$('#showTasks').hide();
+							for (var i = 0; i < len; i++) {
 								html = "<tr onclick='getCurrentRow(this)' class = 'taskRowCls'><td><input type='checkbox'></td><td>"
 										+ " <label for=" + data[i][0] + ">"
-										+ data[i][1] + "</label></td><td><input type='number' class = 'effortCls' disabled name='effort' ></td></tr>";
+										+ data[i][1]
+										+ "</label></td><td><input type='number' class = 'effortCls' disabled name='effort' ></td></tr>";
 								$('#taskTable').append(html);
 							}
+						} else {
+							$('#taskTable').hide();
+							$('#showTasks').show();
 						}
-				else{
-					$('#taskTable').hide();
-					$('#showTasks').show();
-				}
 					},
 					error : function(xhr, statusText, err) {
 						if (xhr.status == 400)
@@ -132,17 +140,20 @@ var effort = new Array();
 
 				});
 	}
-	function getAllTaskId(){
-		taskId= [];
+	function getAllTaskId() {
+		taskId = [];
 		effort = [];
-	$("tr.taskRowCls").each(
+		$("tr.taskRowCls").each(
 				function() {
 					var isChecked = $(this).find('input[type="checkbox"]')
 							.prop("checked");
 					if (isChecked) {
 						taskId.push($(this).find('label').attr("for"));
-						var currentEffort = $(this).find('input[type="number"]').val();
-						if (currentEffort === undefined || currentEffort === null || currentEffort === '' ) {
+						var currentEffort = $(this)
+								.find('input[type="number"]').val();
+						if (currentEffort === undefined
+								|| currentEffort === null
+								|| currentEffort === '') {
 							effort.push(0);
 						} else {
 							effort.push(currentEffort);
@@ -153,6 +164,7 @@ var effort = new Array();
 	}
 	function saveReport() {
 		getAllTaskId();
+		var activityType = $('input[name="activityType"]:checked').val();
 		var scopeId = $('#scope :selected').val();
 		var techId = $('#technology :selected').val();
 		var custId = $('#custId').text();
@@ -162,30 +174,31 @@ var effort = new Array();
 				type : 'POST',
 				url : '/saveReport',
 				data : {
+					'activityType' : activityType,
 					'scopeId' : scopeId,
 					'techId' : techId,
-					'taskId' :taskId,
+					'taskId' : taskId,
 					'custId' : custId,
 					'reportName' : reportName,
 					'effort' : effort
 				},
-				traditional: true,
+				traditional : true,
 				cache : false,
 				success : function(data) {
 					$('#dynTable tbody').empty();
-					if(data.length > 0){
+					if (data.length > 0) {
 						$('#dynTable').show();
 						$('#showTaskDetails').hide();
-					for (var i = 0; i < data.length; i++) {
-						var rows = "<tr>" + "<td >" + data[i][0] + "</td>"
-								+ "<td >" + data[i][1] + "</td>" + "<td >"
-								+ data[i][2] + "</td>" + "<td >"
-								+ data[i][3] + "</td>"+ "<td>"
-								+ data[i][4] + "</td>"+ "</tr>";
-						$('#dynTable tbody').append(rows);
-						
-					}
-					alert("Report Created");
+						for (var i = 0; i < data.length; i++) {
+							var rows = "<tr>" + "<td >" + data[i][0] + "</td>"
+									+ "<td >" + data[i][1] + "</td>" + "<td >"
+									+ data[i][2] + "</td>" + "<td >"
+									+ data[i][3] + "</td>" + "<td>"
+									+ data[i][4] + "</td>" + "</tr>";
+							$('#dynTable tbody').append(rows);
+
+						}
+						alert("Report Created");
 					}
 				},
 				error : function(xhr, statusText, err) {
@@ -224,6 +237,19 @@ var effort = new Array();
 				</div>
 			</div>
 			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Activity Type: </label>
+				<div class="btn-group btn-group-toggle" data-toggle="buttons" onchange="loadScope()">
+					<label class="btn btn-outline-info active"> <input 
+						type="radio" name="activityType" id="transition"
+						value="Transition" autocomplete="off" checked> Transition
+					</label> <label class="btn btn-outline-info"> <input type="radio" 
+						name="activityType" id="transformation" value="Transformation"
+						autocomplete="off"> Transformation
+					</label>
+				</div>
+			</div>
+
+			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Report Name :</label>
 				<div class="form-group mx-sm-3 mb-2">
 					<input type="text" class="form-control" name="reportName"
@@ -253,13 +279,14 @@ var effort = new Array();
 			<div class="form-group row">
 				<label for="taskName" class="col-sm-2 col-form-label">Task
 					Name :</label>
-						<div id = "showTasks" style="font-weight: bold;" > Not Available</div>
-				<table id="taskTable" class="table table-striped" style="display: none;">
+				<div id="showTasks" style="font-weight: bold;">Not Available</div>
+				<table id="taskTable" class="table table-striped"
+					style="display: none;">
 					<thead class="thead-dark">
 						<tr>
 							<th><input type="checkbox" name="checkAll" id="checkAll"></th>
 							<th>Task Name</th>
-							<th >Effort(Phrs)</th>
+							<th>Effort(Phrs)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -267,21 +294,24 @@ var effort = new Array();
 				</table>
 			</div>
 			<div class="form-group row">
-				<label for="details" class="col-sm-2 col-form-label">Selected Task Details :</label>
-				<div id = "showTaskDetails" style="font-weight: bold;" > Not Available</div>
-			<table class="table table-striped" id="dynTable" style="display: none;">
-				<thead class="thead-dark">
-					<tr >
-						<th>Scope </th>
-						<th>Technology </th>
-						<th>Task </th>
-						<th>Effort(Phrs)</th>
-						<th>Status</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
+				<label for="details" class="col-sm-2 col-form-label">Selected
+					Task Details :</label>
+				<div id="showTaskDetails" style="font-weight: bold;">Not
+					Available</div>
+				<table class="table table-striped" id="dynTable"
+					style="display: none;">
+					<thead class="thead-dark">
+						<tr>
+							<th>Scope</th>
+							<th>Technology</th>
+							<th>Task</th>
+							<th>Effort(Phrs)</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
 			</div>
 			<button type="button" class="btn btn-primary center"
 				onclick=" saveReport()">Save</button>

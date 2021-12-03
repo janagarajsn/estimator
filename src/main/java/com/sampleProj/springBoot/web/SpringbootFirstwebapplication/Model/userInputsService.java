@@ -1,10 +1,12 @@
 package com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Model;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity.Customer;
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity.Report;
-import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity.Report_Details;
+import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity.ReportDetails;
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity.Scope;
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity.ScopeTechRel;
 import com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Service.CustomerRepository;
@@ -45,25 +47,49 @@ public class userInputsService {
 	Customer cust = new Customer();
 	Report report = new Report();
 	ScopeTechRel scopeRel = new ScopeTechRel();
-	Report_Details repoDetail = new Report_Details();
+	ReportDetails repoDetail = new ReportDetails();
 	GenerateReportPOJO genReport = new GenerateReportPOJO();
 
-	public void addCustomer(Map<String, String> allRequestParams) {
-		if (customerRepository.max() == null) {
-			cust.setId(1);
-		} else {
-			cust.setId(customerRepository.max());
-		}
+	public String addCustomer(Map<String, String> allRequestParams) throws SQLIntegrityConstraintViolationException {
+		try {
+			if (customerRepository.max() == null) {
+				cust.setId(1);
+			} else {
+				cust.setId(customerRepository.max());
+			}
 
-		cust.setCreated_by("Admin");
-		cust.setCreated_date(new Date());
-		cust.setCloud_Vendor(allRequestParams.get("cloudVendor"));
-		cust.setActivity_name(allRequestParams.get("activityName"));
-		cust.setActivity_type(allRequestParams.get("activityType"));
-		cust.setCustomer_name(allRequestParams.get("customerName"));
-		cust.setNumberOfServer(Integer.parseInt(allRequestParams.get("server")));
-		cust.setDuration(Integer.parseInt(allRequestParams.get("duration")));
-		customerRepository.save(cust);
+			cust.setCreated_by("Admin");
+			cust.setCreated_date(new Date());
+			cust.setCloud_Vendor(allRequestParams.get("cloudVendor"));
+			cust.setActivity_name(allRequestParams.get("activityName"));
+			cust.setAddress(allRequestParams.get("address"));
+			cust.setVertical(allRequestParams.get("vertical"));
+			cust.setLocation(valueToStringOrEmpty(allRequestParams.get("location1"), 1)
+					+ valueToStringOrEmpty(allRequestParams.get("location2"), 2)
+					+ valueToStringOrEmpty(allRequestParams.get("location3"), 3)
+					+ valueToStringOrEmpty(allRequestParams.get("location4"), 4));
+			// System.out.println();
+			cust.setCustomer_name(allRequestParams.get("customerName"));
+			cust.setNumberOfServer(Integer.parseInt(allRequestParams.get("server")));
+			cust.setDuration(Integer.parseInt(allRequestParams.get("duration")));
+			customerRepository.save(cust);
+			return "Customer Created";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	private String valueToStringOrEmpty(String value, int seq) {
+		if (value == null) {
+			return "";
+		} else {
+			if (seq == 1) {
+				return value.toString();
+			} else {
+				return "/" + value.toString();
+			}
+		}
+		// return value == null ? "" : "/" + value.toString();
 	}
 
 	public List<Object> loadCustomer(String activity_name) {
@@ -86,8 +112,8 @@ public class userInputsService {
 		return taskName;
 	}
 
-	public List<Object> saveReport(int scopeId, int techId, String[] taskId, int custId, String[] effort,
-			String reportName) {
+	public List<Object> saveReport(String activityType, int scopeId, int techId, String[] taskId, int custId,
+			String[] effort, String reportName) {
 		List<Integer> availableTaskIds = taskRepo.findTaskId(techId);
 		List<String> selectedTaskIdList = Arrays.asList(taskId);
 		List<String> selectedEffortList = Arrays.asList(effort);
@@ -102,7 +128,7 @@ public class userInputsService {
 			reportId = 1;
 			report.setReport_id(reportId);
 		} else {
-			reportId = reportRepo.findReportId(reportName);
+			reportId = reportRepo.findReportId(reportName, activityType);
 			if (reportId == 0) {
 				reportId = reportRepo.max();
 			}
@@ -112,6 +138,7 @@ public class userInputsService {
 		report.setCreated_date(new Date());
 		report.setCust_id(custId);
 		report.setReport_name(reportName);
+		report.setActivity_type(activityType);
 		reportRepo.save(report);
 		for (int i = 0; i < commonArrayValues.size(); i++) {
 			repoDetail.setReport_id(reportId);
@@ -126,7 +153,6 @@ public class userInputsService {
 		}
 		commonArrayValues = new ArrayList<Integer>(availableTaskIds);
 		commonArrayValues.removeAll(selectedTaskIdNum);
-		System.out.println("OUTSCOPE ::::::::::: " + commonArrayValues);
 		for (int i = 0; i < commonArrayValues.size(); i++) {
 			repoDetail.setReport_id(reportId);
 			repoDetail.setScope_id(scopeId);
@@ -139,11 +165,11 @@ public class userInputsService {
 			repoDetailRepo.save(repoDetail);
 		}
 
-		List<Object> reportDetails = repoDetailRepo.findTechDetails(custId, reportName);
+		List<Object> reportDetails = repoDetailRepo.findTechDetails(custId, reportName, activityType);
 		return reportDetails;
 	}
 
-	public Object retrieveReportData(int custId) {
+	public List<GenerateReportPOJO> retrieveReportData(int custId) {
 		List<Object[]> objList = reportRepo.generateReport(custId);
 		List<GenerateReportPOJO> latestNewsList = new ArrayList<GenerateReportPOJO>();
 		if (objList.size() > 0) {
@@ -152,6 +178,7 @@ public class userInputsService {
 				genReport.setReport_id((int) objects[0]);
 				genReport.setReport_name(objects[1].toString());
 				genReport.setCustomer_name(objects[2].toString());
+				genReport.setActivity_type(objects[3].toString());
 				return genReport;
 			}).collect(Collectors.toList());
 		}
@@ -168,8 +195,8 @@ public class userInputsService {
 		return techDetails;
 	}
 
-	public List<Object> loadScopeByCustId(int custId) {
-		List<Object> scopeName = scopeRep.findBycustId(custId);
+	public List<Object> loadScopeByActType(String activityType) {
+		List<Object> scopeName = scopeRep.findByActivityType(activityType);
 		return scopeName;
 	}
 
@@ -208,4 +235,37 @@ public class userInputsService {
 		}
 		return latestNewsList;
 	}
+
+	public List<GenerateReportPOJO> findReportName(int reportId) {
+		List<Object[]> objList = reportRepo.findReportName(reportId);
+		List<GenerateReportPOJO> latestNewsList = new ArrayList<GenerateReportPOJO>();
+		if (objList.size() > 0) {
+			latestNewsList = objList.stream().map(objects -> {
+				GenerateReportPOJO genReport = new GenerateReportPOJO();
+				genReport.setReport_name(objects[0].toString());
+				genReport.setActivity_type(objects[1].toString());
+				return genReport;
+			}).collect(Collectors.toList());
+
+		}
+		return latestNewsList;
+	}
+	public List<GenerateReportPOJO> exportAllData(int customerId, int reportId) {
+		List<Object[]> objList = repoDetailRepo.generateReportDetails(customerId, reportId);
+		List<GenerateReportPOJO> latestNewsList = new ArrayList<GenerateReportPOJO>();
+		if (objList.size() > 0) {
+			latestNewsList = objList.stream().map(objects -> {
+				GenerateReportPOJO genReport = new GenerateReportPOJO();
+				genReport.setReport_name(objects[0].toString());
+				genReport.setScope_name(objects[1].toString());
+				genReport.setTechnology_name(objects[2].toString());
+				genReport.setTask_name(objects[3].toString());
+				genReport.setScope_Flag(objects[4].toString());
+				genReport.setEffort(objects[5].toString());
+				return genReport;
+			}).collect(Collectors.toList());
+		}
+		return latestNewsList;
+	}
+
 }

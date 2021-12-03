@@ -20,11 +20,12 @@
 		var activityName = $('#activityName').val();
 		if (activityName == "DC to DC") {
 			$('#cloudDropdown').hide();
-			
+
 		}
 	});
 </script>
 <title>Customer</title>
+
 </head>
 <body>
 	<div class="container register-form">
@@ -37,53 +38,55 @@
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label">Activity Name : </label>
 					<div class="form-group mx-sm-3 mb-2">
-						<input type="text" class="form-control" id="activityName" readonly="readonly"
-							 name="activityName" value="${activityName}">
+						<input type="text" class="form-control" id="activityName"
+							readonly="readonly" name="activityName" value="${activityName}">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label">Customer Name : </label>
 					<div class="form-group mx-sm-3 mb-2">
-						<input type="text" class="form-control" name="customerName" required="required"
-							placeholder="Enter Name">
+						<input type="text" class="form-control" name="customerName"
+							required="required" placeholder="Enter Name">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Address : </label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="text" class="form-control" name="address"
+							placeholder="Address">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Vertical : </label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="text" class="form-control" name="vertical"
+							placeholder="Vertical">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label">Number of Server : </label>
 					<div class="form-group mx-sm-3 mb-2">
-						<input type="number" class="form-control" name="server" required="required"
-							placeholder="Server">
-					</div>
-				</div>
-				<!-- <div class="form-group row">
-					<label class="col-sm-2 col-form-label">Location : </label>
-					<div class="form-group mx-sm-3 mb-2">
-						<input type="text" class="form-control" name="location"
-							placeholder="location">
-					</div>
-				</div> -->
-				<div class="form-group row">
-					<label class="col-sm-2 col-form-label">Duration of
-						Project: </label>
-					<div class="form-group mx-sm-3 mb-2">
-						<input type="number" class="form-control" name="duration" required="required"
-							placeholder="duration(Months)">
+						<input type="number" class="form-control" name="server"
+							required="required" placeholder="Server">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label class="col-sm-2 col-form-label">Activity Type: </label>
-					<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						<label class="btn btn-outline-info active"> <input type="radio"
-							name="activityType" id="transition" value="transition"
-							autocomplete="off" checked> Transition
-						</label> <label class="btn btn-outline-info"> <input type="radio"
-							name="activityType" id="transformation" value="transformation"
-							autocomplete="off"> Transformation
-						</label>
+				<label class="col-sm-2 col-form-label">Locations : </label>
+						<input type="checkbox" name="location1" value="US">US
+						<input type="checkbox" name="location2" value="EMEA">EMEA
+						<input type="checkbox" name="location3" value="APAC">APAC
+						<input type="checkbox" name="location4" value="Others">Others
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Project Duration :
+					</label>
+					<div class="form-group mx-sm-3 mb-2">
+						<input type="number" class="form-control" name="duration"
+							required="required" placeholder="Duration(Months)">
 					</div>
 				</div>
 				<div class="form-group row" id="cloudDropdown">
-					<label class="col-sm-2 col-form-label">Cloud Vendor</label>
+					<label class="col-sm-2 col-form-label">Cloud Vendor :</label>
 					<div class="col-sm-10">
 						<div class="dropdown">
 							<select name="cloudVendor" id="cloudVendor" required>

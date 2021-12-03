@@ -5,9 +5,11 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
+@IdClass(ReportKey.class)
 public class Report {
 	
 	@GeneratedValue
@@ -15,6 +17,8 @@ public class Report {
 	@Id
 	@PrimaryKeyJoinColumn
 	private String report_name;
+	@Id
+	private String activity_type;
 	private int cust_id;
 	private String created_by;
 	private Date created_date;
@@ -67,19 +71,30 @@ public class Report {
 		this.report_name = report_name;
 	}
 
-	@Override
-	public String toString() {
-		return "Report [report_id=" + report_id + ", report_name=" + report_name + ", cust_id=" + cust_id
-				+ ", created_by=" + created_by + ", created_date=" + created_date + "]";
+
+	public String getActivity_type() {
+		return activity_type;
 	}
 
-	public Report(int report_id, String report_name, int cust_id, String created_by, Date created_date) {
+	public void setActivity_type(String activity_type) {
+		this.activity_type = activity_type;
+	}
+
+	public Report(int report_id, String report_name, String activity_type, int cust_id, String created_by,
+			Date created_date) {
 		super();
 		this.report_id = report_id;
 		this.report_name = report_name;
+		this.activity_type = activity_type;
 		this.cust_id = cust_id;
 		this.created_by = created_by;
 		this.created_date = created_date;
+	}
+
+	@Override
+	public String toString() {
+		return "Report [report_id=" + report_id + ", report_name=" + report_name + ", activity_type=" + activity_type
+				+ ", cust_id=" + cust_id + ", created_by=" + created_by + ", created_date=" + created_date + "]";
 	}
 
 

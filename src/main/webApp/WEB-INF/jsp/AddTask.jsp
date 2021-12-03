@@ -58,7 +58,7 @@
 			},
 			cache : false,
 			success : function(data) {
-				alert("Task added Successfully");
+				alert(data);
 			},
 			error : function(e) {
 				 if(xhr.status == 400  )

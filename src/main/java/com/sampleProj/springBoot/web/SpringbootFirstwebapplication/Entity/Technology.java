@@ -2,14 +2,15 @@ package com.sampleProj.springBoot.web.SpringbootFirstwebapplication.Entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 
 @Entity
 public class Technology {
 	private int techid;
 	@Id
+	@Column(unique = true)
 	private String technology_name;
 	private String created_by;
 	private Date created_date;

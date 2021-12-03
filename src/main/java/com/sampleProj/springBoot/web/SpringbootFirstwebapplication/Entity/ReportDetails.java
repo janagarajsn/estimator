@@ -5,10 +5,12 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Report_Details")
 @IdClass(ReportDetailsKey.class)
-public class Report_Details {
+public class ReportDetails {
 	
 	@Id
 	private int report_id;
@@ -23,7 +25,7 @@ public class Report_Details {
 	private String created_by;
 	private Date created_date;
 	
-	public Report_Details() {
+	public ReportDetails() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -92,24 +94,25 @@ public class Report_Details {
 		this.scope_Flag = scope_Flag;
 	}
 
-	public Report_Details(int report_id, int scope_id, int techid, int task_id, int effort, String created_by,
-			Date created_date, String scope_Flag) {
+
+	@Override
+	public String toString() {
+		return "ReportDetails [report_id=" + report_id + ", scope_id=" + scope_id + ", techid=" + techid + ", task_id="
+				+ task_id + ", effort=" + effort  + ", scope_Flag=" + scope_Flag
+				+ ", created_by=" + created_by + ", created_date=" + created_date + "]";
+	}
+
+	public ReportDetails(int report_id, int scope_id, int techid, int task_id, int effort, String activity_type,
+			String scope_Flag, String created_by, Date created_date) {
 		super();
 		this.report_id = report_id;
 		this.scope_id = scope_id;
 		this.techid = techid;
 		this.task_id = task_id;
 		this.effort = effort;
+		this.scope_Flag = scope_Flag;
 		this.created_by = created_by;
 		this.created_date = created_date;
-		this.scope_Flag = scope_Flag;
-	}
-
-	@Override
-	public String toString() {
-		return "Report_Details [report_id=" + report_id + ", scope_id=" + scope_id + ", techid=" + techid + ", task_id="
-				+ task_id + ", effort=" + effort + ", created_by=" + created_by + ", created_date=" + created_date
-				+ ", scope_Flag=" + scope_Flag + "]";
 	}
 
 

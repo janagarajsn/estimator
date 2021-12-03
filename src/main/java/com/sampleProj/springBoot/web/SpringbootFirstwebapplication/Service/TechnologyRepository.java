@@ -13,5 +13,8 @@ public interface TechnologyRepository extends JpaRepository<Technology, Integer>
 
 	@Query(value = "SELECT techid,technology_name FROM Technology")
 	public List<Object> findByActivityName();
+	
+	@Query(value = "SELECT technology_name FROM Technology")
+	public String findByTechName(String technology_name);
 
 }
