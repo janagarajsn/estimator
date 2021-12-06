@@ -57,7 +57,7 @@ $(document)
 					name="reportId" id="reportId" hidden="true">
 				<button type="submit" class="btn btn-warning">Export</button>
 				<button type="button" class="btn btn-warning float-right ml-2"
-					onclick="location.href = '/showReport';">Back</button>
+					onclick="location.href = '/ShowCustomer';">Back</button>
 
 			</form>
 			<table class="table table-striped">

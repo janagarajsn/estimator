@@ -82,12 +82,12 @@
 
 				</div>
 				<button type="submit" formaction="/customer" formmethod="GET"
-					class="btn btn-success">Add Customer</button>
+					class="btn btn-primary">Add Customer</button>
 
 				<button type="submit" formaction="/addReport" formmethod="POST"
 					class="btn btn-primary">Add Report</button>
 				<button type="submit" formaction="/generateReport" formmethod="POST"
-					class="btn btn-warning float-center ml-2">Show Report</button>
+					class="btn btn-primary float-center ml-2">Show Report</button>
 				<button type="button" class="btn btn-danger"
 				onclick="location.href = '/';">Back</button>
 			</form>
